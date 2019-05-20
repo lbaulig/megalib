@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/checker/checker.iml" filepath="$PROJECT_DIR$/checker/checker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/megalib2.iml" filepath="$PROJECT_DIR$/.idea/megalib2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/visualizer/visualizer.iml" filepath="$PROJECT_DIR$/visualizer/visualizer.iml" />
+    </modules>
+  </component>
+</project>
