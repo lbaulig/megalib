@@ -1,0 +1,16 @@
+graph(name, nodes, edges, text) ::= <<graph <name> {
+	Test
+	
+    <if(nodes)>
+    // all nodes
+    <nodes:node(); separator="\n">
+    
+    <if(edges)>
+    // all edges
+    <edges:edge(); separator="\n">
+    <endif>
+    <endif>
+}>>
+ 
+node(n) ::= "\"<n.name>\";"
+edge(e) ::= "\"<e.origin.name>\" -> \"<e.destination.name>\";"

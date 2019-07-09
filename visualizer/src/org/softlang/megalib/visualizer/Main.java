@@ -13,6 +13,7 @@ import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry
 import org.softlang.megalib.visualizer.transformation.dot.DOTPDFTransformer;
 import org.softlang.megalib.visualizer.transformation.dot.DOTTransformer;
 import org.softlang.megalib.visualizer.transformation.graphml.GRAPHMLTransformer;
+import org.softlang.megalib.visualizer.transformation.latex.LATEXTransformer;
 
 public class Main {
 
@@ -24,7 +25,8 @@ public class Main {
           		     -> new GRAPHMLTransformer(options));
             TransformerRegistry.registerTransformer("dot_pdf", "dot", (VisualizerOptions options) 
             		-> new DOTPDFTransformer(options));
-        	
+            TransformerRegistry.registerTransformer("latex", "tex", (VisualizerOptions options) 
+            		-> new LATEXTransformer(options));        	
         	
             CommandLine cli = new CommandLine(TransformerRegistry.getRegisteredTransformerNames())
                 .parse(args);
