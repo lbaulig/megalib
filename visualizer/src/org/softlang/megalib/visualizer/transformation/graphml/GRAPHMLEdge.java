@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.softlang.megalib.visualizer.models.Edge;
-import org.softlang.megalib.visualizer.models.Node;
 
 public class GRAPHMLEdge {
 

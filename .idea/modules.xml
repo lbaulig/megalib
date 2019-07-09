@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/checker/checker.iml" filepath="$PROJECT_DIR$/checker/checker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/megalib2.iml" filepath="$PROJECT_DIR$/.idea/megalib2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/megalib.iml" filepath="$PROJECT_DIR$/.idea/megalib.iml" />
       <module fileurl="file://$PROJECT_DIR$/visualizer/visualizer.iml" filepath="$PROJECT_DIR$/visualizer/visualizer.iml" />
     </modules>
   </component>
