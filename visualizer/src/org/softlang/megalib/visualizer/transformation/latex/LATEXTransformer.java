@@ -20,7 +20,7 @@ import org.softlang.megalib.visualizer.models.transformation.ConfigItem;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
 import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
 import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
-import org.softlang.megalib.visualizer.transformation.graphml.GRAPHMLEdge;
+import org.softlang.megalib.visualizer.transformation.latex.LATEXNode;
 import org.softlang.megalib.visualizer.transformation.graphml.GRAPHMLNode;
 import org.softlang.megalib.visualizer.transformation.latex.LATEXConfigurationBuilder;
 import org.stringtemplate.v4.ST;
@@ -67,19 +67,31 @@ public class LATEXTransformer extends Transformer {
 	        STGroup templateGroup = loadTemplateFromResource();
 	        ST template = templateGroup.getInstanceOf("graph");
 
-	        List<Node> nodes = new LinkedList<>();
-	        List<Edge> edges = new LinkedList<>();
+	        List<Node> old_nodes = new LinkedList<>();
+	        List<LATEXNode> nodes = new LinkedList<>();
+	        HashSet<LATEXNode> legendNodes = new HashSet<LATEXNode>();
 	        
+	        g.forEachNode(n -> old_nodes.add((n)));
 	        
-	        g.forEachNode(n -> nodes.add((n)));
+	        for( Node n : old_nodes) {
+	        	for(String s : n.getInstanceHierarchy()) {
+	        		if(config.contains(s)) {
+	    	        	nodes.add(createLATEXNode(n,s));
+	    	        	n = new Node(s,s,"");
+	        			legendNodes.add(createLATEXNode(n,s));
+	        		}
+	        	}
+	        }
+	        
 	        
 	        template.add("name", options.getModelName());
 	        template.add("nodes", nodes);
 	        template.add("edges", g.getEdges());
+	        template.add("legendnodes", legendNodes);
 	        String text = g.getText();
 	        text = text.replace("/*", "");
 	    	text = text.replaceAll("\\r", "");
-	    	text = text.replaceAll("\\n", "\\\\n");
+	    	text = text.replaceAll("\\n", "");
 	        text = text.replaceAll("\"", "'");
 	        text = text.replace("@Description:", "");
 	        text = Pattern.compile("@Rationale(.*?)\\*/", Pattern.DOTALL).matcher(text).replaceAll("").trim();
@@ -113,9 +125,9 @@ public class LATEXTransformer extends Transformer {
 	        ).collect(Collectors.toList());
 	    }
 
-	  //  private GRAPHMLNode createGRAPHMLNode(Node node, int id) {
-	  //     return new GRAPHMLNode(node, getConfigValue(node, "color"), getConfigValue(node, "shape"), id, getConfigValue(node, "icon"));
-	  //  }
+	    private LATEXNode createLATEXNode(Node node, String instance) {
+	       return new LATEXNode(node, getConfigValue(node, "color"), getConfigValue(node, "shape"), instance);
+	    }
 
 
 }
