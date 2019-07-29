@@ -20,6 +20,11 @@ public class VisualizerOptions {
         return new VisualizerOptions(filePath.toAbsolutePath(), args.getType().toLowerCase(), fileEnding);
     }
 
+    public static VisualizerOptions of(Path filePath, String type, String fileEnding) {
+
+        return new VisualizerOptions(filePath, type, fileEnding);
+    }
+
     private Path filePath;
 
     private String type;

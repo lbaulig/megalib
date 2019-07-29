@@ -11,8 +11,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="checker" target="1.8" />
-      <module name="visualizer" target="1.8" />
+      <module name="checker" target="11" />
+      <module name="visualizer" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -4,11 +4,10 @@
 package org.softlang.megalib.visualizer.models;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.Block;
@@ -43,19 +42,52 @@ public class ModelToGraph {
 	}
 
 	public Graph createGraph() {
-		Graph graph = new Graph(options.getModelName() + "Complete",
-				"The complete Megamodel for " + options.getModelName());
-		model.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
-				.map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
-		model.getFunctionDeclarations().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
-		model.getFunctionApplications().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
-		model.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
-				.forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
-		model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
-		model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+        Graph graph = new Graph(options.getModelName() + "Complete",
+                "The complete Megamodel for " + options.getModelName());
+        model.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
+                .map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
+        model.getFunctionDeclarations().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+        model.getFunctionApplications().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+        model.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+                .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
+        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
 
-		return graph;
-	}
+        return graph;
+    }
+
+    public Graph createImportGraph() {
+		Path filePath = options.getFilePath();
+
+		String[] result = filePath.toString().split("[/\\\\.]");
+
+		String fileEnding = result[result.length-1];
+		String fileName = result[result.length-2];
+		String parentFolder = result[result.length-3];
+		String graphName = parentFolder +"."+fileName;
+		System.out.println("Name:" + graphName);
+
+        Graph graph = new Graph(graphName+ "Importgraph",
+                "Import graph for " + graphName);
+
+
+        //create Each node
+        model.getImportGraph().forEach(relation ->
+                {
+                	//System.out.println(relation.getSubject() + " imports "+relation.getObject());
+					Node nodeLeft = new Node("MegaL", relation.getSubject(), "");
+					Node nodeRight = new Node("MegaL", relation.getObject(), "");
+					graph.add(nodeLeft);
+					graph.add(nodeRight);
+                });
+
+		model.getImportGraph().forEach(relation -> createEdge(graph, relation.getSubject(), relation.getObject(), "imports"));
+
+        return graph;
+    }
+
+
+
 
 	public List<Graph> createBlockGraphs() {
 		List<Graph> graphs = new LinkedList<>();
@@ -64,6 +96,8 @@ public class ModelToGraph {
 				continue;
 			}
 			Graph graph = new Graph(b.getModule() + b.getId(), b.getText());
+			//debug
+			//System.out.println("Name: "+graph.getName() + " Text: "+graph.getText());
 			// instance nodes
 			b.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
 					.map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
@@ -80,7 +114,11 @@ public class ModelToGraph {
 	}
 
 	protected Node createNode(String name, String type, MegaModel model) {
-		Node result = new Node(type, name, getFirstInstanceLink(model, name));
+		//public Node(String type, String name, String link)
+		String link = getFirstInstanceLink(model, name);
+		Node result = new Node(type, name, link);
+		//debug
+		//System.out.println("New Node: Type: "+type+" Name: "+ name+" Link: "+link);
 		applyInstanceHierarchy(result);
 		return result;
 	}

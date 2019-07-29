@@ -37,10 +37,13 @@ public class Visualizer {
     	fileEnding = options.getFileEnding();
     	type = options.getTransformationType();
         transformer = TransformerRegistry.getInstance(options);
+        //debug
+		System.out.println("Transformer of type: "+options.getTransformationType());
     }
 
     public void plotGraph(Graph graph) {
         try {
+        	//System.out.println(graph.getName());
         	String path = "../output/"+graph.getName().replaceAll("\\.", "/")+"."+fileEnding;
         	File f = new File(path);
         	f.getParentFile().mkdirs();      

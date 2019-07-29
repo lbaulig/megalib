@@ -25,6 +25,8 @@ public class CommandLine {
 
     private static final String TYPE_OPTION_NAME = "t";
 
+    private static final String GRAPH_OPTION_NAME = "g";
+
     private CommandLineParser parser = new DefaultParser();
 
     private HelpFormatter help = new HelpFormatter();
@@ -77,6 +79,12 @@ public class CommandLine {
         return new CommandLineArguments(this.cli.getOptionValue(FILE_OPTION_NAME), this.cli.getOptionValue(TYPE_OPTION_NAME));
     }
 
+    public String getGraphArgument() {
+        String result = this.cli.getOptionValue(GRAPH_OPTION_NAME);
+        if(result!=null) return result;
+        return  "";
+    }
+
     private Options createCommandLineOptions() {
         Option file = Option.builder(FILE_OPTION_NAME)
             .required()
@@ -92,9 +100,17 @@ public class CommandLine {
             .longOpt("type")
             .desc("The type of visualization.")
             .build();
+        Option graph = Option.builder(GRAPH_OPTION_NAME)
+                .optionalArg(true)
+                .hasArg()
+                .argName("standard|overview|force")
+                .longOpt("graph")
+                .desc("The type of graph.")
+                .build();
         return new Options()
             .addOption(file)
-            .addOption(type);
+            .addOption(type)
+            .addOption(graph);
     }
 
 }
