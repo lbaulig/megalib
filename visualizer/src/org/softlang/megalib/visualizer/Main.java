@@ -120,7 +120,10 @@ public class Main {
                     Graph importGraph = mtg.createImportGraph();
                     visualizer.plotGraph(importGraph);
                 }
-                else
+                else if(cli.getTypeArgument().equals("latex")){
+                	Graph latex = mtg.createLatexGraph();
+                	visualizer.plotGraph(latex);
+                }else
                 {
                     List<Graph> graphs = mtg.createBlockGraphs();
                     graphs.forEach(visualizer::plotGraph);

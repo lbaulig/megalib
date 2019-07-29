@@ -12,16 +12,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.softlang.megalib.visualizer.VisualizerOptions;
-import org.softlang.megalib.visualizer.exceptions.MegaModelVisualizerException;
-import org.softlang.megalib.visualizer.models.Edge;
 import org.softlang.megalib.visualizer.models.Graph;
 import org.softlang.megalib.visualizer.models.Node;
 import org.softlang.megalib.visualizer.models.transformation.ConfigItem;
 import org.softlang.megalib.visualizer.models.transformation.Transformer;
 import org.softlang.megalib.visualizer.models.transformation.TransformerConfiguration;
-import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry;
 import org.softlang.megalib.visualizer.transformation.latex.LATEXNode;
-import org.softlang.megalib.visualizer.transformation.graphml.GRAPHMLNode;
 import org.softlang.megalib.visualizer.transformation.latex.LATEXConfigurationBuilder;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
@@ -84,13 +80,14 @@ public class LATEXTransformer extends Transformer {
 	        }
 	        
 	        
-	        template.add("name", options.getModelName());
+	        template.add("name", g.getName());
 	        template.add("nodes", nodes);
 	        template.add("edges", g.getEdges());
 	        template.add("legendnodes", legendNodes);
 	        String text = g.getText();
 	        text = text.replace("/*", "");
 	    	text = text.replaceAll("\\r", "");
+	    	text = text.replaceAll("_", "");
 	    	text = text.replaceAll("\\n", "");
 	        text = text.replaceAll("\"", "'");
 	        text = text.replace("@Description:", "");

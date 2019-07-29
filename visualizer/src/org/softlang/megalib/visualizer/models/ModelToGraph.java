@@ -55,6 +55,19 @@ public class ModelToGraph {
 
         return graph;
     }
+	
+	public Graph createLatexGraph() {
+		Graph graph = new Graph(options.getModelName(),"ToDo");
+        model.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
+                .map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
+        model.getFunctionDeclarations().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+        model.getFunctionApplications().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+        model.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+                .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
+        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+        return graph;
+    }
 
     public Graph createImportGraph() {
 		Path filePath = options.getFilePath();

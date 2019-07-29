@@ -78,6 +78,12 @@ public class CommandLine {
     public CommandLineArguments getRequiredArguments() {
         return new CommandLineArguments(this.cli.getOptionValue(FILE_OPTION_NAME), this.cli.getOptionValue(TYPE_OPTION_NAME));
     }
+    
+    public String getTypeArgument() {
+        String result = this.cli.getOptionValue(TYPE_OPTION_NAME);
+        if(result!=null) return result;
+        return  "";
+    }
 
     public String getGraphArgument() {
         String result = this.cli.getOptionValue(GRAPH_OPTION_NAME);

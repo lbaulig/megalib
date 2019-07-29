@@ -1,11 +1,11 @@
-graph(name, nodes, legendnodes, edges, text, file) ::= <<
+graph(name, nodes, legendnodes, edges, text) ::= <<
 \RequirePackage{luatex85} 
 \documentclass{beamer}
 
 \usepackage{xcolor}
 \usepackage{tikz}
 
-\usetikzlibrary{graphdrawing,calc,shapes.geometric}
+\usetikzlibrary{graphdrawing,calc,shapes.geometric,shapes.misc,shapes.symbols}
 \usegdlibrary{force,layered}
 
 % -|-, |-|, |-, -|, - and | are options to define edges, - (straight line) is default
@@ -50,7 +50,13 @@ graph(name, nodes, legendnodes, edges, text, file) ::= <<
 \begin{document}
 
 \begin{frame}{<name>}
-\begin{figure}
+\begin{columns}
+    \begin{column}{0.7\textwidth}
+        \begin{figure}
+        \resizebox{\textwidth}{!}{
+        {\renewcommand{\arraystretch}{3}
+        % number defines space between graph and legend
+        \begin{tabular}{@{}l@{}}
         \begin{tikzpicture}[layered layout, sibling distance=3cm, level sep=0.8cm]
         % sibling distance = horizontally distance between nodes
         % level sep = vertically distance between node layers
@@ -62,18 +68,22 @@ graph(name, nodes, legendnodes, edges, text, file) ::= <<
     		<endif>
     		<endif>
     		            
-        \end{tikzpicture}
-   \caption{Visualization of <name>: <text>}
-\end{figure}
-\begin{figure}
-	\begin{tikzpicture}[layered layout, node distance = 2.5 cm]
-            <if(nodes)>
+        \end{tikzpicture}\\\\
+    	\begin{tikzpicture}[layered layout, sibling distance=3cm]
+    		<if(nodes)>
     		<legendnodes:legendnode(); separator="\n">
     		<endif>
-            
-        \end{tikzpicture}
-\end{figure}
-
+    	\end{tikzpicture}
+        \end{tabular}%
+        }%
+        }%
+   	\caption{Visualization of <name>}
+	\end{figure}
+    \end{column}
+    \begin{column}{0.28\textwidth}
+		<text>
+    \end{column}
+\end{columns}
 \end{frame}{}
 
 \end{document}
