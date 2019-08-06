@@ -22,6 +22,12 @@ public class ModelToGraph {
 	private VisualizerOptions options;
 	private ModelLoader loader;
 
+
+	private String fileEnding;
+	private String fileName;
+	private String parentFolder;
+	private String moduleName;
+
 	public ModelToGraph(VisualizerOptions options) {
 		this.options = options;
 	}
@@ -30,16 +36,43 @@ public class ModelToGraph {
 		
 	}
 
+	public String getFileEnding() {
+		return fileEnding;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public String getParentFolder() {
+		return parentFolder;
+	}
+	public String getModuleName() {
+		return moduleName;
+	}
+
 	public boolean loadModel() {
 		loader = new ModelLoader();
 		try {
 			model = loader.getModel();
+			Path filePath = options.getFilePath();
+
+			String[] result = filePath.toString().split("[/\\\\.]");
+
+			if(result.length >=3)
+			{
+				this.fileEnding = result[result.length-1];
+				this.fileName = result[result.length-2];
+				this.parentFolder = result[result.length-3];
+				this.moduleName = parentFolder+"."+fileName;
+			}
 			return loader.loadFile(options.getFilePath().toAbsolutePath().toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
+
 
 	public Graph createGraph() {
         Graph graph = new Graph(options.getModelName() + "Complete",
@@ -70,31 +103,37 @@ public class ModelToGraph {
     }
 
     public Graph createImportGraph() {
-		Path filePath = options.getFilePath();
+		//debug
+		//System.out.println("Name:" + graphName);
 
-		String[] result = filePath.toString().split("[/\\\\.]");
-
-		String fileEnding = result[result.length-1];
-		String fileName = result[result.length-2];
-		String parentFolder = result[result.length-3];
-		String graphName = parentFolder +"."+fileName;
-		System.out.println("Name:" + graphName);
-
-        Graph graph = new Graph(graphName+ "Importgraph",
-                "Import graph for " + graphName);
+        Graph graph = new Graph(moduleName+ "Importgraph",
+                "Import graph for " + moduleName);
 
 
-        //create Each node
-        model.getImportGraph().forEach(relation ->
-                {
-                	//System.out.println(relation.getSubject() + " imports "+relation.getObject());
-					Node nodeLeft = new Node("MegaL", relation.getSubject(), "");
-					Node nodeRight = new Node("MegaL", relation.getObject(), "");
-					graph.add(nodeLeft);
-					graph.add(nodeRight);
-                });
+        if(!model.getImportGraph().isEmpty())
+		{
+			//create Each node
+			model.getImportGraph().forEach(relation ->
+			{
+				//debug
+				//System.out.println(relation.getSubject() + " imports "+relation.getObject());
+				Node nodeLeft = new Node("Module", relation.getSubject(), "");
+				nodeLeft.getInstanceHierarchy().add(nodeLeft.getType());
+				Node nodeRight = new Node("Module", relation.getObject(), "");
+				nodeRight.getInstanceHierarchy().add(nodeRight.getType());
+				graph.add(nodeLeft);
+				graph.add(nodeRight);
+			});
 
-		model.getImportGraph().forEach(relation -> createEdge(graph, relation.getSubject(), relation.getObject(), "imports"));
+			model.getImportGraph().forEach(relation -> createEdge(graph, relation.getSubject(), relation.getObject(), "imports"));
+		}
+        else
+		{
+			//debug
+			//model has no imports, add as single node
+			Node node = new Node("Module", moduleName, "");
+			graph.add(node);
+		}
 
         return graph;
     }
@@ -109,6 +148,32 @@ public class ModelToGraph {
 				continue;
 			}
 			Graph graph = new Graph(b.getModule() + b.getId(), b.getText());
+			//debug
+			//System.out.println("Name: "+graph.getName() + " Text: "+graph.getText());
+			// instance nodes
+			b.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
+					.map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
+			b.getFunctionDeclarations().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+			b.getFunctionApplications().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+			b.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+					.forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
+			b.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+			b.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+			graphs.add(graph);
+		}
+
+		return graphs;
+	}
+
+	public List<Graph> createBlockGraphsOfModule(String moduleName) {
+		List<Graph> graphs = new LinkedList<>();
+		for (Block b : model.getBlocks()) {
+			if (!b.getModule().startsWith(moduleName)) {
+				continue;
+			}
+			//debug
+			//System.out.println("Creating Graph of: "+b.getModule());
+			Graph graph = new Graph(b.getModule() +"."+ b.getId(), b.getText());
 			//debug
 			//System.out.println("Name: "+graph.getName() + " Text: "+graph.getText());
 			// instance nodes

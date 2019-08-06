@@ -15,9 +15,15 @@ import org.softlang.megalib.visualizer.models.transformation.TransformerRegistry
 public class VisualizerOptions {
 
     public static VisualizerOptions of(CommandLineArguments args) {
-        Path filePath = Paths.get(args.getFilePath());
+        Path filePath = null;
+        if(args.getFilePath()!=null)
+        {
+            Path path = Paths.get(args.getFilePath());
+            filePath = path.toAbsolutePath();
+        }
+
         String fileEnding = TransformerRegistry.getFileEnding(args.getType().toLowerCase());
-        return new VisualizerOptions(filePath.toAbsolutePath(), args.getType().toLowerCase(), fileEnding);
+        return new VisualizerOptions(filePath, args.getType().toLowerCase(), fileEnding);
     }
 
     public static VisualizerOptions of(Path filePath, String type, String fileEnding) {
@@ -39,7 +45,12 @@ public class VisualizerOptions {
     }
 
     public String getModelName() {
-        return filePath.getFileName().toString().replaceAll("\\.megal", "");
+        String modelName = "";
+        if(filePath!=null)
+            modelName = filePath.getFileName().toString().replaceAll("\\.megal", "");
+        else
+            modelName = "forceGraph";
+        return modelName;
     }
 
     public Path getFilePath() {

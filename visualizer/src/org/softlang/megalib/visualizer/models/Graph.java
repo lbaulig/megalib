@@ -42,7 +42,7 @@ public class Graph implements Iterable<Node> {
      * @return the node added to the graph
      */
     public Node add(Node n) {
-        return nodes.put(n.getName(), n);
+        return nodes.put(n.getName().toLowerCase(), n);
     }
 
     /**
@@ -52,7 +52,7 @@ public class Graph implements Iterable<Node> {
      * @return the node that is represented by its name or null if no node with the name is present
      */
     public Node get(String name) {
-        return nodes.get(name);
+        return nodes.get(name.toLowerCase());
     }
 
     public void remove(Node node) {

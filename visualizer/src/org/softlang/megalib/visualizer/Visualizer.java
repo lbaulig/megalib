@@ -43,6 +43,7 @@ public class Visualizer {
 
     public void plotGraph(Graph graph) {
         try {
+        	//debug
         	//System.out.println(graph.getName());
         	String path = "../output/"+graph.getName().replaceAll("\\.", "/")+"."+fileEnding;
         	File f = new File(path);
@@ -65,6 +66,10 @@ public class Visualizer {
         path = "../output/"+gLegend.getName().replaceAll("\\.", "/")+"."+fileEnding;
         File fLegend = new File(path);
         Files.write(fLegend.toPath(),transformer.transform(gLegend).getBytes(StandardCharsets.UTF_8));
+
+
+
+
         if(type.equals("dot")) {
             	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
             	MutableGraph gMutableLegend = Parser.read(FileUtils.openInputStream(fLegend));
