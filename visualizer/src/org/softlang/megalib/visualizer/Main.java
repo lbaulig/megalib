@@ -36,13 +36,26 @@ public class Main {
             CommandLine cli = new CommandLine(TransformerRegistry.getRegisteredTransformerNames())
                 .parse(args);
 
-            if(!cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
-                System.out.println("Special option \"l\"=link is ignored if special option \"i\"=importGraph is missing.");
-            }
             VisualizerOptions options = VisualizerOptions.of(cli.getAllArguments());
             Visualizer visualizer = new Visualizer(options);
 
-            if(cli.getGraphArgument().equals("force")) {
+            if(!cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
+                System.out.println("Special option \"l\"=link is ignored if special option \"i\"=importGraph is missing.");
+            }
+            if(cli.getTypeArgument().equals("latex"))
+            {
+                ModelToGraph mtg = new ModelToGraph(options);
+                boolean success = mtg.loadModel();
+                if(!success) {
+                    mtg.getTypeErrors().forEach(e -> System.out.println(e));
+                }else {
+
+                    Graph latex = mtg.createLatexGraph();
+                    visualizer.plotGraph(latex);
+                }
+            }
+            else if(cli.getGraphArgument().equals("force"))
+            {
                 List<Graph> graphs = new LinkedList<>();
                 File cwd = new File(".");
                 try {
@@ -232,7 +245,8 @@ public class Main {
                     }
                     visualizer.plotGraph(importGraph);
                 }
-            }else if(cli.getGraphArgument().equals("feature"))
+            }
+            else if(cli.getGraphArgument().equals("feature"))
             {
                 List<Graph> demoGraphs = new ArrayList<>();
                 List<Graph> moduleGraphs = new ArrayList<>();
@@ -643,18 +657,6 @@ public class Main {
                     });
                 }
                 visualizer.plotGraph(finalGraph);
-            }
-            else if(cli.getTypeArgument().equals("latex"))
-            {
-                ModelToGraph mtg = new ModelToGraph(options);
-                boolean success = mtg.loadModel();
-                if(!success) {
-                    mtg.getTypeErrors().forEach(e -> System.out.println(e));
-                }else {
-
-                    Graph latex = mtg.createLatexGraph();
-                    visualizer.plotGraph(latex);
-                }
             }
             else // "default"
             {

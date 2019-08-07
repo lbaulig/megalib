@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a38f4d3c-9695-49bf-9e8b-520d1eb234c0" name="Default Changelist" comment="overview and force directed graph working">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/checker___.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/checker__clean_compile_package_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/visualizer___.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/visualizer__clean_compile_package_.xml" afterDir="false" />
+    <list default="true" id="a38f4d3c-9695-49bf-9e8b-520d1eb234c0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/Visualizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/Visualizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/VisualizerOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/VisualizerOptions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/cli/CommandLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/cli/CommandLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/models/ModelToGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/models/ModelToGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/transformation/graphml/graphml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/visualizer/src/org/softlang/megalib/visualizer/transformation/graphml/graphml.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -180,7 +171,21 @@
       <option name="project" value="LOCAL" />
       <updated>1558353445419</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="overview and force directed graph working">
+      <created>1564367706206</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1564367706206</updated>
+    </task>
+    <task id="LOCAL-00004" summary="final commit: feature graph, model overview, force graph and others completed">
+      <created>1565128906035</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1565128906035</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -264,7 +269,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="working version locally on my computer" />
     <MESSAGE value="overview and force directed graph working" />
-    <option name="LAST_COMMIT_MESSAGE" value="overview and force directed graph working" />
+    <MESSAGE value="final commit: feature graph, model overview, force graph and others completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="final commit: feature graph, model overview, force graph and others completed" />
   </component>
   <component name="mavenExecuteGoalHistory">
     <option value="$PROJECT_DIR$/visualizer" />
