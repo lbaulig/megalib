@@ -110,8 +110,8 @@ public class Main {
                                             importGraph = tempGraph.createImportGraph();
                                         }
                                         else
-                                            importGraph = new Graph("tempgraph.tempgraph",
-                                                    "temporary graph");
+                                            importGraph = new Graph("forcegraph.forcegraph",
+                                                    "Force directed overview graph");
                                         //debug
                                         //System.out.println("Searching for: "+parentFolder+"."+shortFileName);
                                         //importGraph.forEachNode(node -> System.out.println(node.getName()));
@@ -202,8 +202,8 @@ public class Main {
                         importGraph = mtg.createImportGraph();
                     }
                     else
-                        importGraph = new Graph("tempgraph.tempgrah",
-                                "temporary graph");
+                        importGraph = new Graph("overview.overviewgraph",
+                                "overview graph");
 
                     if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                         List<Graph> blockGraphs = mtg.createBlockGraphsOfModule(mtg.getParentFolder());
@@ -308,8 +308,8 @@ public class Main {
                                 if (cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i")) {
                                     importGraph = tempGraph.createImportGraph();
                                 } else
-                                    importGraph = new Graph("tempgraph.tempgrah",
-                                            "temporary graph");
+                                    importGraph = new Graph("feature.featureGraph",
+                                            "Feature Graph");
 
                                 if (cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                                     List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(tempGraph.getParentFolder());
@@ -412,8 +412,8 @@ public class Main {
                                     importGraph = tempGraph.createImportGraph();
                                 }
                                 else
-                                    importGraph = new Graph("tempgraph.tempgrah",
-                                            "temporary graph");
+                                    importGraph = new Graph("feature.featureGraph",
+                                        "Feature Graph");
 
                                 if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                                     List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(tempGraph.getParentFolder());
@@ -480,12 +480,7 @@ public class Main {
                     });
                 }
 
-
-
-
                 //combine Graphs
-
-
                 Graph finalGraph = new Graph("feature.featureGraph",
                         "Feature Graph");
 
@@ -590,8 +585,8 @@ public class Main {
                                     importGraph = tempGraph.createImportGraph();
                                 }
                                 else
-                                    importGraph = new Graph("tempgraph.tempgrah",
-                                            "temporary graph");
+                                    importGraph= new Graph("modulegraph.modulegraph",
+                                            "Complete module graph");
 
                                 if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                                     List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(tempGraph.getParentFolder());
