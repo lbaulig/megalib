@@ -39,7 +39,7 @@ public class Main {
             VisualizerOptions options = VisualizerOptions.of(cli.getAllArguments());
             Visualizer visualizer = new Visualizer(options);
 
-            if(!cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
+            if(cli.getSpecialArgument()!=null && !cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
                 System.out.println("Special option \"l\"=link is ignored if special option \"i\"=importGraph is missing.");
             }
             if(cli.getTypeArgument().equals("latex"))
@@ -54,7 +54,7 @@ public class Main {
                     visualizer.plotGraph(latex);
                 }
             }
-            else if(cli.getGraphArgument().equals("force"))
+            else if(cli.getGraphArgument()!=null && cli.getGraphArgument().equals("force"))
             {
                 List<Graph> graphs = new LinkedList<>();
                 File cwd = new File(".");
@@ -104,7 +104,7 @@ public class Main {
                                         //debug
                                         //System.out.println("Load successful.");
                                         Graph importGraph = null;
-                                        if(cli.getSpecialArgument().contains("i"))
+                                        if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i"))
                                         {
                                             importGraph = tempGraph.createImportGraph();
                                         }
@@ -117,7 +117,7 @@ public class Main {
                                         //String searchString = parentFolder + "." + shortFileName;
                                         //searchString = searchString.toLowerCase();
 
-                                        if(cli.getSpecialArgument().contains("b"))
+                                        if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b"))
                                         {
 
                                         List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(parentFolder);
@@ -136,7 +136,7 @@ public class Main {
                                                 //have to check if node already exists, otherwise edges are overwritten
                                                 if (finalImportGraph.get(node.getName()) == null)
                                                     finalImportGraph.add(node);
-                                                if(cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
+                                                if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
                                                     Node fromNode = finalImportGraph.get(searchString);
                                                     if (fromNode == null)
                                                         System.out.println("Could not find module \"" + searchString + "\" . Maybe mismatch between file name and module name?");
@@ -186,7 +186,7 @@ public class Main {
                 }
 
             }
-            else if(cli.getGraphArgument().equals("overview"))
+            else if(cli.getGraphArgument()!=null && cli.getGraphArgument().equals("overview"))
             {
                 ModelToGraph mtg = new ModelToGraph(options);
                 boolean success = mtg.loadModel();
@@ -196,7 +196,7 @@ public class Main {
 
 
                     Graph importGraph = null;
-                    if(cli.getSpecialArgument().contains("i"))
+                    if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i"))
                     {
                         importGraph = mtg.createImportGraph();
                     }
@@ -204,7 +204,7 @@ public class Main {
                         importGraph = new Graph("tempgraph.tempgrah",
                                 "temporary graph");
 
-                    if(cli.getSpecialArgument().contains("b")) {
+                    if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                         List<Graph> blockGraphs = mtg.createBlockGraphsOfModule(mtg.getParentFolder());
                         for (Graph graph : blockGraphs) {
                             System.out.println("Processing Block: " + graph.getName());
@@ -221,7 +221,7 @@ public class Main {
                                 //have to check if node already exists, otherwise edges are overwritten
                                 if (finalImportGraph.get(node.getName()) == null)
                                     finalImportGraph.add(node);
-                                if(cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l"))
+                                if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l"))
                                 {
                                     Node fromNode = finalImportGraph.get(searchString);
                                     if (fromNode == null)
@@ -246,7 +246,7 @@ public class Main {
                     visualizer.plotGraph(importGraph);
                 }
             }
-            else if(cli.getGraphArgument().equals("feature"))
+            else if(cli.getGraphArgument()!=null && cli.getGraphArgument().equals("feature"))
             {
                 List<Graph> demoGraphs = new ArrayList<>();
                 List<Graph> moduleGraphs = new ArrayList<>();
@@ -304,13 +304,13 @@ public class Main {
                             }else {
 
                                 Graph importGraph = null;
-                                if (cli.getSpecialArgument().contains("i")) {
+                                if (cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i")) {
                                     importGraph = tempGraph.createImportGraph();
                                 } else
                                     importGraph = new Graph("tempgraph.tempgrah",
                                             "temporary graph");
 
-                                if (cli.getSpecialArgument().contains("b")) {
+                                if (cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                                     List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(tempGraph.getParentFolder());
                                     for (Graph graph : blockGraphs) {
                                         System.out.println("Processing Block: " + graph.getName());
@@ -329,7 +329,7 @@ public class Main {
                                                 node.setType(node.getType() + "_demo");
                                                 finalImportGraph.add(node);
                                             }
-                                            if(cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
+                                            if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
                                                 Node fromNode = finalImportGraph.get(searchString);
                                                 if (fromNode == null)
                                                     System.out.println("Could not find module \"" + searchString + "\" . Maybe mismatch between file name and module name?");
@@ -406,7 +406,7 @@ public class Main {
                             }else {
 
                                 Graph importGraph = null;
-                                if(cli.getSpecialArgument().contains("i"))
+                                if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i"))
                                 {
                                     importGraph = tempGraph.createImportGraph();
                                 }
@@ -414,7 +414,7 @@ public class Main {
                                     importGraph = new Graph("tempgraph.tempgrah",
                                             "temporary graph");
 
-                                if(cli.getSpecialArgument().contains("b")) {
+                                if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                                     List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(tempGraph.getParentFolder());
                                     for (Graph graph : blockGraphs) {
                                         System.out.println("Processing Block: " + graph.getName());
@@ -432,7 +432,7 @@ public class Main {
                                             if (finalImportGraph.get(node.getName()) == null) {
                                                 finalImportGraph.add(node);
                                             }
-                                            if(cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
+                                            if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
                                                 Node fromNode = finalImportGraph.get(searchString);
                                                 if (fromNode == null)
                                                     System.out.println("Could not find module \"" + searchString + "\" . Maybe mismatch between file name and module name?");
@@ -530,7 +530,7 @@ public class Main {
                 }
                 visualizer.plotGraph(finalGraph);
             }
-            else if(cli.getGraphArgument().equals("folder"))
+            else if(cli.getGraphArgument()!=null && cli.getGraphArgument().equals("folder"))
             {
                 List<Graph> moduleGraphs = new ArrayList<>();
                 File cwd = new File(".");
@@ -584,7 +584,7 @@ public class Main {
                             }else {
 
                                 Graph importGraph = null;
-                                if(cli.getSpecialArgument().contains("i"))
+                                if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i"))
                                 {
                                     importGraph = tempGraph.createImportGraph();
                                 }
@@ -592,7 +592,7 @@ public class Main {
                                     importGraph = new Graph("tempgraph.tempgrah",
                                             "temporary graph");
 
-                                if(cli.getSpecialArgument().contains("b")) {
+                                if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("b")) {
                                     List<Graph> blockGraphs = tempGraph.createBlockGraphsOfModule(tempGraph.getParentFolder());
                                     for (Graph graph : blockGraphs) {
                                         System.out.println("Processing Block: " + graph.getName());
@@ -610,7 +610,7 @@ public class Main {
                                             if (finalImportGraph.get(node.getName()) == null) {
                                                 finalImportGraph.add(node);
                                             }
-                                            if(cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
+                                            if(cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
                                                 Node fromNode = finalImportGraph.get(searchString);
                                                 if (fromNode == null)
                                                     System.out.println("Could not find module \"" + searchString + "\" . Maybe mismatch between file name and module name?");
