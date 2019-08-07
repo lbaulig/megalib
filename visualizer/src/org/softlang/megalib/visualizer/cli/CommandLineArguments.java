@@ -24,19 +24,13 @@ public class CommandLineArguments {
         this.specialOption = specialOption;
     }
     public CommandLineArguments(String type, String filePath, String graphType) {
-        this.type = type;
-        this.filePath = filePath;
-        this.graphType = graphType;
+        this(type,filePath,graphType,null);
     }
     public CommandLineArguments(String type, String filePath) {
-        this.type = type;
-        this.filePath = null;
-        this.graphType = "default";
+        this(type,filePath,null,null);
     }
     public CommandLineArguments(String type) {
-        this.type = type;
-        this.filePath = null;
-        this.graphType = "default";
+        this(type,null,null,null);
     }
 
     public String getFilePath() {
@@ -81,6 +75,9 @@ public class CommandLineArguments {
             return false;
         }
         if (!Objects.equals(this.graphType, other.graphType)) {
+            return false;
+        }
+        if (!Objects.equals(this.specialOption, other.specialOption)) {
             return false;
         }
         return true;

@@ -33,7 +33,7 @@ public class SubstitutionDotVisualizerTest {
 		
 		String data[] = {"-f", "../checker/testsample/SubstitutionChainDemo/demo/App.megal", "-t", "dot"};
 	    cli.parse(data);
-	    options = VisualizerOptions.of(cli.getRequiredArguments());
+	    options = VisualizerOptions.of(cli.getAllArguments());//cli.getRequiredArguments());
 	    ModelToGraph mtg = new ModelToGraph(options);
 	    assertTrue(mtg.loadModel());
 	    graphs = mtg.createBlockGraphs();

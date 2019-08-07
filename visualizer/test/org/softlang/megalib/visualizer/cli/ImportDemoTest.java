@@ -30,7 +30,7 @@ public class ImportDemoTest {
 
 	    String data[] = {"-f", "../checker/testsample/ImportDemo/bcd/d/D.megal", "-t", "dot"};
 	    cli.parse(data);
-	    VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
+	    VisualizerOptions options = VisualizerOptions.of(cli.getAllArguments());//cli.getRequiredArguments());
 	    vis = new Visualizer(options);
 	    ModelToGraph mtg = new ModelToGraph(options);
 	    assertTrue(mtg.loadModel());
@@ -47,11 +47,11 @@ public class ImportDemoTest {
 	public void testGraph1() {
 		Graph g1 = graphs.get(0);
 		Map<String, Node> nodes = g1.getNodes();
-		
-		assertTrue(nodes.containsKey("?Program"));
-		assertTrue(nodes.containsKey("?spec"));
-		assertTrue(nodes.containsKey("HTML5"));
-		assertTrue(nodes.containsKey("Specification"));
+		//nodes.keySet().forEach(text -> System.out.println(text));
+		assertTrue(nodes.containsKey("?Program".toLowerCase()));
+		assertTrue(nodes.containsKey("?spec".toLowerCase()));
+		assertTrue(nodes.containsKey("HTML5".toLowerCase()));
+		assertTrue(nodes.containsKey("Specification".toLowerCase()));
 		assertEquals(4,nodes.size());
 		
 		assertEquals(4,g1.getEdges().size());
@@ -61,12 +61,12 @@ public class ImportDemoTest {
 	public void testGraph4() {
 		Graph g4 = graphs.get(3);
 		Map<String, Node> nodes = g4.getNodes();
-		
-		assertTrue(nodes.containsKey("f"));
-		assertTrue(nodes.containsKey("HTML5"));
-		assertTrue(nodes.containsKey("?a1"));
-		assertTrue(nodes.containsKey("?a2"));
-		assertTrue(nodes.containsKey("?Program"));
+		//nodes.keySet().forEach(text -> System.out.println(text));
+		assertTrue(nodes.containsKey("f".toLowerCase()));
+		assertTrue(nodes.containsKey("HTML5".toLowerCase()));
+		assertTrue(nodes.containsKey("?a1".toLowerCase()));
+		assertTrue(nodes.containsKey("?a2".toLowerCase()));
+		assertTrue(nodes.containsKey("?Program".toLowerCase()));
 		assertEquals(5,nodes.size());
 		assertEquals(5,g4.getEdges().size());
 	}
