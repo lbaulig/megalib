@@ -42,8 +42,10 @@ public class Main {
             if(cli.getSpecialArgument()!=null && !cli.getSpecialArgument().contains("i") && cli.getSpecialArgument().contains("l")) {
                 System.out.println("Special option \"l\"=link is ignored if special option \"i\"=importGraph is missing.");
             }
-            if(cli.getTypeArgument().equals("latex"))
+            //if(cli.getTypeArgument().equals("latex"))
+            if(cli.getGraphArgument()!=null && cli.getGraphArgument().equals("latex"))
             {
+                //System.out.print(cli.getGraphArgument());
                 ModelToGraph mtg = new ModelToGraph(options);
                 boolean success = mtg.loadModel();
                 if(!success) {
@@ -108,7 +110,7 @@ public class Main {
                                             importGraph = tempGraph.createImportGraph();
                                         }
                                         else
-                                            importGraph = new Graph("tempgraph.tempgrah",
+                                            importGraph = new Graph("tempgraph.tempgraph",
                                                     "temporary graph");
                                         //debug
                                         //System.out.println("Searching for: "+parentFolder+"."+shortFileName);
