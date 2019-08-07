@@ -89,17 +89,35 @@ public class ModelToGraph {
         return graph;
     }
 	
-	public Graph createLatexGraph() {
-		Graph graph = new Graph(options.getModelName(),"ToDo");
-        model.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
-                .map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
-        model.getFunctionDeclarations().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
-        model.getFunctionApplications().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
-        model.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
-                .forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
-        model.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
-        model.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
-        return graph;
+	public  List<Graph> createLatexGraphs() {
+		List<Graph> graphs = new LinkedList<>();
+		for (Block b : model.getBlocks()) {
+			if (b.getModule().startsWith("common.")) {
+				continue;
+			}
+			Graph graph = new Graph(b.getModule() + b.getId(), b.getText());
+			//System.out.println("Name: "+graph.getName() + " Text: "+graph.getText());
+			// instance nodes
+			b.getInstanceOfMap().entrySet().stream().filter(entry -> !entry.getValue().equals("Link"))
+			.map(entry -> createNode(entry.getKey(), entry.getValue(), model)).forEach(graph::add);
+			b.getFunctionDeclarations().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+			b.getFunctionApplications().forEach((name, funcs) -> graph.add(createNode(name, "Function", model)));
+			b.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+				.forEach(e -> createEdgesByRelations(graph, e.getKey(), e.getValue()));
+			b.getFunctionDeclarations().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+			b.getFunctionApplications().forEach((name, functions) -> createEdgesByFunction(graph, name, functions));
+			graphs.add(graph);
+			
+			Set<String> modelastext =  new HashSet<>();
+			b.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~="))
+			.forEach(e -> e.getValue().forEach(relation -> modelastext.add(relation.getSubject())));
+			//b.getRelationships().entrySet().stream().filter(e -> !e.getKey().equals("=") && !e.getKey().equals("~=") && e.getKey().equals("implements"))
+			//.forEach(e -> e.getValue().forEach(relation -> modelastext.add(relation.getObject())));
+			createModelFromText(graph, modelastext);			
+			graphs.add(graph);
+		}
+
+		return graphs;
     }
 
     public Graph createImportGraph() {
@@ -261,4 +279,30 @@ public class ModelToGraph {
 	public List<String> getTypeErrors() {
 		return loader.getTypeErrors();
 	}
+	
+	
+	private void createModelFromText(Graph graph, Set<String> modelastext) {
+		String result = "";
+		String sep = "\\null \\quad ";
+		String newline = " \\newline";
+		List<Node> nodes = new LinkedList<>();
+		graph.forEachNode(n -> nodes.add(n));
+		for (String s : modelastext) {
+			for(Node n : nodes) {
+				if(s.equals(n.getName())) {
+					result += s + newline + "\n";
+					for (Edge e : graph.getEdges()) {
+						if(e.getOrigin().equals(n)) {
+							result += sep + e.getLabel() + " " + e.getDestination().getName() + newline + "\n";
+						}
+						//if(e.getDestination().equals(n) && e.getLabel().equals("implements")) {
+						//	result += sep + e.getLabel() + " " + e.getOrigin().getName() + newline + "\n";
+						//}
+					}
+				}
+			}
+		}
+		graph.setText(result);
+	}
+	
 }

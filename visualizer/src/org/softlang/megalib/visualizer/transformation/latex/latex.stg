@@ -1,6 +1,6 @@
 graph(name, nodes, legendnodes, edges, text) ::= <<
 \RequirePackage{luatex85} 
-\documentclass{beamer}
+\documentclass[8pt]{beamer}
 
 \usepackage{xcolor}
 \usepackage{tikz}

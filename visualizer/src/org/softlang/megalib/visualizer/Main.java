@@ -49,9 +49,8 @@ public class Main {
                 if(!success) {
                     mtg.getTypeErrors().forEach(e -> System.out.println(e));
                 }else {
-
-                    Graph latex = mtg.createLatexGraph();
-                    visualizer.plotGraph(latex);
+                	List<Graph> graphs = mtg.createLatexGraphs();
+                    graphs.forEach(visualizer::plotGraph);
                 }
             }
             else if(cli.getGraphArgument()!=null && cli.getGraphArgument().equals("force"))

@@ -34,6 +34,10 @@ public class Graph implements Iterable<Node> {
     public String getText() {
 		return text;
 	}
+    
+    public void setText(String text) {
+    	this.text = text;
+    }
 
     /**
      * Adds a node to the graph. If a node with the same name is present, the old one gets overwritten by the new node.

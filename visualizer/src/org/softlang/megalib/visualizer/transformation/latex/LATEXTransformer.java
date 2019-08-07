@@ -84,15 +84,7 @@ public class LATEXTransformer extends Transformer {
 	        template.add("nodes", nodes);
 	        template.add("edges", g.getEdges());
 	        template.add("legendnodes", legendNodes);
-	        String text = g.getText();
-	        text = text.replace("/*", "");
-	    	text = text.replaceAll("\\r", "");
-	    	text = text.replaceAll("_", "");
-	    	text = text.replaceAll("\\n", "");
-	        text = text.replaceAll("\"", "'");
-	        text = text.replace("@Description:", "");
-	        text = Pattern.compile("@Rationale(.*?)\\*/", Pattern.DOTALL).matcher(text).replaceAll("").trim();
-	        template.add("text", text);
+	        template.add("text", g.getText());
 
 	        return template.render();
 	    }
