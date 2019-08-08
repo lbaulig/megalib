@@ -1,5 +1,5 @@
-module ruby.ERuby
-import ruby.RubyPlatform
+module ruby.eRuby
+import ruby.rubyPlatform
 
 
 

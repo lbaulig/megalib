@@ -4,11 +4,9 @@
 package org.softlang.megalib.visualizer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -39,10 +37,14 @@ public class Visualizer {
     	fileEnding = options.getFileEnding();
     	type = options.getTransformationType();
         transformer = TransformerRegistry.getInstance(options);
+        //debug
+		System.out.println("Transformer of type: "+options.getTransformationType());
     }
 
     public void plotGraph(Graph graph) {
         try {
+        	//debug
+        	//System.out.println(graph.getName());
         	String path = "../output/"+graph.getName().replaceAll("\\.", "/")+"."+fileEnding;
         	File f = new File(path);
         	f.getParentFile().mkdirs();      
@@ -64,6 +66,10 @@ public class Visualizer {
         path = "../output/"+gLegend.getName().replaceAll("\\.", "/")+"."+fileEnding;
         File fLegend = new File(path);
         Files.write(fLegend.toPath(),transformer.transform(gLegend).getBytes(StandardCharsets.UTF_8));
+
+
+
+
         if(type.equals("dot")) {
             	MutableGraph g = Parser.read(FileUtils.openInputStream(f));
             	MutableGraph gMutableLegend = Parser.read(FileUtils.openInputStream(fLegend));

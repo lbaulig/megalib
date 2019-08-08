@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.java.megalib.checker.services.TypeWarningCheck;
-import org.java.megalib.checker.services.ModelLoader;
 import org.java.megalib.models.MegaModel;
 import org.java.megalib.parser.ParserException;
 import org.junit.Test;

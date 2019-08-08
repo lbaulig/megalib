@@ -25,6 +25,10 @@ public class CommandLine {
 
     private static final String TYPE_OPTION_NAME = "t";
 
+    private static final String GRAPH_OPTION_NAME = "g";
+
+    private static final String SPECIAL_OPTION_NAME = "s";
+
     private CommandLineParser parser = new DefaultParser();
 
     private HelpFormatter help = new HelpFormatter();
@@ -74,17 +78,33 @@ public class CommandLine {
     }
 
     public CommandLineArguments getRequiredArguments() {
-        return new CommandLineArguments(this.cli.getOptionValue(FILE_OPTION_NAME), this.cli.getOptionValue(TYPE_OPTION_NAME));
+        return new CommandLineArguments(this.cli.getOptionValue(TYPE_OPTION_NAME));
+    }
+
+    public CommandLineArguments getAllArguments() {
+        return new CommandLineArguments(this.cli.getOptionValue(TYPE_OPTION_NAME),this.cli.getOptionValue(FILE_OPTION_NAME), this.cli.getOptionValue(GRAPH_OPTION_NAME), this.cli.getOptionValue(SPECIAL_OPTION_NAME));
+    }
+    
+    public String getTypeArgument() {
+        String result = this.cli.getOptionValue(TYPE_OPTION_NAME);
+        return result;
+    }
+
+    public String getGraphArgument() {
+        String result = this.cli.getOptionValue(GRAPH_OPTION_NAME);
+        return result;
+    }
+    public String getFileArgument() {
+        String result = this.cli.getOptionValue(FILE_OPTION_NAME);
+        return result;
+    }
+
+    public String getSpecialArgument() {
+        String result = this.cli.getOptionValue(SPECIAL_OPTION_NAME);
+        return result;
     }
 
     private Options createCommandLineOptions() {
-        Option file = Option.builder(FILE_OPTION_NAME)
-            .required()
-            .hasArg()
-            .argName("file path")
-            .longOpt("file")
-            .desc("The megamodel file that is to be visualized")
-            .build();
         Option type = Option.builder(TYPE_OPTION_NAME)
             .required()
             .hasArg()
@@ -92,9 +112,34 @@ public class CommandLine {
             .longOpt("type")
             .desc("The type of visualization.")
             .build();
+
+        Option file = Option.builder(FILE_OPTION_NAME)
+                .optionalArg(true)
+                //.required()
+                .hasArg()
+                .argName("file path")
+                .longOpt("file")
+                .desc("The megamodel file/folder that is to be visualized")
+                .build();
+        Option graph = Option.builder(GRAPH_OPTION_NAME)
+                .optionalArg(true)
+                .hasArg()
+                .argName("standard|overview|force|folder|feature")
+                .longOpt("graph")
+                .desc("The type of graph.")
+                .build();
+        Option special = Option.builder(SPECIAL_OPTION_NAME)
+                .optionalArg(true)
+                .hasArg()
+                .argName("special")
+                .longOpt("special")
+                .desc("Special Options")
+                .build();
         return new Options()
             .addOption(file)
-            .addOption(type);
+            .addOption(type)
+            .addOption(graph)
+            .addOption(special);
     }
 
 }

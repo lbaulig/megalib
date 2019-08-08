@@ -1,0 +1,95 @@
+graph(name, nodes, legendnodes, edges, text) ::= <<
+\RequirePackage{luatex85} 
+\documentclass[8pt]{beamer}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\usetikzlibrary{graphdrawing,calc,shapes.geometric,shapes.misc,shapes.symbols}
+\usegdlibrary{force,layered}
+
+% -|-, |-|, |-, -|, - and | are options to define edges, - (straight line) is default
+% you can define the angle of edges, (A) edge [->,|-|=x] (B) is an edge from A to B with label x
+% it starts vertical at A goes to horizontal and tehn vertical into B
+% - and | are both straight lines
+\tikzset{
+  -|-/.style={
+    to path={
+      (\tikztostart) -| ($(\tikztostart)!0.5!(\tikztotarget)$) |-  node[fill=white] {#1} (\tikztotarget)
+      \tikztonodes
+    }
+  },
+  -|-/.default=label,
+  |-|/.style={
+    to path={
+      (\tikztostart) |- ($(\tikztostart)!0.5!(\tikztotarget)$) -| node[fill=white] {#1} (\tikztotarget)
+      \tikztonodes
+    }
+  },
+  |-|/.default=label,
+  |-/.style={to path={ |- node[fill=white] {#1} (\tikztotarget)}},
+  |-/.default=label,
+  -|/.style={to path={ -| node[fill=white] {#1} (\tikztotarget)}},
+  -|/.default=label,
+  -/.style={to path={ -- node[fill=white] {#1} (\tikztotarget)}},
+  -/.default=label,
+  |/.style={to path={ -- node[fill=white] {#1}  (\tikztotarget)}},
+  |/.default=label,
+}
+
+% define colors
+
+<if(nodes)>
+<legendnodes:colors(); separator="\n">
+<endif>
+
+% define additional shapes
+
+% define icons
+
+\begin{document}
+
+\begin{frame}{<name>}
+\begin{columns}
+    \begin{column}{0.7\textwidth}
+        \begin{figure}
+        \resizebox{\textwidth}{!}{
+        {\renewcommand{\arraystretch}{3}
+        % number defines space between graph and legend
+        \begin{tabular}{@{}l@{}}
+        \begin{tikzpicture}[layered layout, sibling distance=3cm, level sep=0.8cm]
+        % sibling distance = horizontally distance between nodes
+        % level sep = vertically distance between node layers
+            <if(nodes)>
+    		<nodes:node(); separator="\n">
+            
+            <if(edges)>
+    		<edges:edge(); separator="\n">
+    		<endif>
+    		<endif>
+    		            
+        \end{tikzpicture}\\\\
+    	\begin{tikzpicture}[layered layout, sibling distance=3cm]
+    		<if(nodes)>
+    		<legendnodes:legendnode(); separator="\n">
+    		<endif>
+    	\end{tikzpicture}
+        \end{tabular}%
+        }%
+        }%
+   	\caption{Visualization of <name>}
+	\end{figure}
+    \end{column}
+    \begin{column}{0.28\textwidth}
+		<text>
+    \end{column}
+\end{columns}
+\end{frame}{}
+
+\end{document}
+>>
+ 
+node(n) ::= "\node [<n.shape>, draw, fill = <n.instance>]  (<n.name>) {<n.name>};"
+edge(e) ::= "\path (<e.origin.name>) edge [->,-=<e.label>] (<e.destination.name>);"
+legendnode(n) ::= "\node [<n.shape>, draw, fill = <n.type>]  (<n.name>) {<n.name>};"
+colors(n) ::= "\definecolor{<n.name>}{HTML}{<n.color>}"

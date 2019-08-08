@@ -36,7 +36,7 @@ public class CommandLineTest {
         };
         cli.parse(data);
         Assert.assertEquals(
-            new CommandLineArguments("abc123", "graphviz"), cli.getRequiredArguments());
+            new CommandLineArguments("graphviz", "abc123"), cli.getAllArguments());//cli.getRequiredArguments());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class CommandLineTest {
         };
         cli.parse(another);
         Assert.assertEquals(
-            new CommandLineArguments("abc123", "testtype"), cli.getRequiredArguments());
+            new CommandLineArguments( "testtype", "abc123"), cli.getAllArguments());//cli.getRequiredArguments());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CommandLineTest {
 
         String data[] = {"-f", "../models/webbrowser/Webbrowser.megal", "-t", "dot"};
         cli.parse(data);
-        VisualizerOptions options = VisualizerOptions.of(cli.getRequiredArguments());
+        VisualizerOptions options = VisualizerOptions.of(cli.getAllArguments());//cli.getRequiredArguments());
 
         ModelToGraph mtg = new ModelToGraph(options);
 	    assertTrue(mtg.loadModel());

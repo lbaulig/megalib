@@ -7,10 +7,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -32,6 +34,7 @@ public class ModelLoader {
 
     private MegaModel model;
     private List<String> typeErrors;
+    private String moduleName;
 
     public ModelLoader(String preludePath){
         model = new MegaModel();
@@ -51,7 +54,7 @@ public class ModelLoader {
     public MegaModel getModel() {
         return model;
     }
-    
+
     public File getRoot() {
     		return root;
     }
@@ -66,6 +69,12 @@ public class ModelLoader {
         f = new File(filepath);
         if (!f.exists())
             throw new FileNotFoundException();
+
+        String[] result = filepath.split("[/\\\\.]");
+
+        String fileName = result[result.length-2];
+        String parentFolder = result[result.length-3];
+        this.moduleName = parentFolder+"."+fileName;
         data = FileUtils.readFileToString(f);
         if (!loadCompleteModelFrom(data, f.getAbsolutePath()))
             return false;
@@ -82,14 +91,14 @@ public class ModelLoader {
 
     private boolean loadCompleteModelFrom(String data, String abspath) {
         try {
-        		Queue<String> todos = Importer.resolveImports(data, abspath,this);
-            if(!abspath.contains("common")) {
-            	System.out.println("Loading:");
-            	todos.forEach(t -> System.out.println(" "+t));
-            	System.out.println();
-            }
+            Queue<String> todos = Importer.resolveImports(data, abspath, this);
+
             while (!todos.isEmpty()) {
                 String p = todos.poll();
+                if(!p.contains("common")) {
+                    //debug
+                    //System.out.println("Loading model: "+p);
+                }
                 p = root.getAbsolutePath() + "/" + p.replaceAll("\\.", "/") + ".megal";
                 String pdata = FileUtils.readFileToString(new File(p));
                 ParserListener pl = (ParserListener) parse(pdata, new ParserListener(model));

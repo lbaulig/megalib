@@ -53,9 +53,11 @@ public class Node {
      * @return the current node
      */
     public Node connect(String relation, Node destination) {
-    	Set<Edge> set = new HashSet<Edge>();
+    	Set<Edge> set = null;
     	if(edges.containsKey(relation))
     		set = edges.get(relation);
+    	else
+    	    set = new HashSet<>();
     	set.add(new Edge(this, destination, relation));
         edges.put(relation, set);
         return this;

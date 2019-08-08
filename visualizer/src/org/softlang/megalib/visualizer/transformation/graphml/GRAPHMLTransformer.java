@@ -92,9 +92,7 @@ public class GRAPHMLTransformer extends Transformer {
         	edges.add(new GRAPHMLEdge(e,nodes,i));
         	i++;
         }
-        
-       
-        
+
         template.add("name", options.getModelName());
         template.add("nodes", nodes);
         template.add("edges", edges);
