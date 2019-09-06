@@ -1,4 +1,4 @@
-module mongodb.demo.Sharding 
+module mongodb.demo.Sharding.Sharding 
 
 import mongodb.Sharding where {
 	[mongos / ?router,

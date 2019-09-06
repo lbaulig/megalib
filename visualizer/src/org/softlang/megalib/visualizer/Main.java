@@ -125,7 +125,7 @@ public class Main {
                                         for (Graph graph : blockGraphs) {
                                             System.out.println("Processing Block: " + graph.getName());
 
-                                            List<String> tempStrings = new LinkedList<String>(Arrays.asList(graph.getName().split("\\.")));
+                                            List<String> tempStrings = new LinkedList<>(Arrays.asList(graph.getName().split("\\.")));
                                             tempStrings.remove(tempStrings.size() - 1);
                                             String searchString = String.join(".", tempStrings).toLowerCase();
                                             //debug
@@ -210,7 +210,7 @@ public class Main {
                         for (Graph graph : blockGraphs) {
                             System.out.println("Processing Block: " + graph.getName());
 
-                            List<String> tempStrings = new LinkedList<String>(Arrays.asList(graph.getName().split("\\.")));
+                            List<String> tempStrings = new LinkedList<>(Arrays.asList(graph.getName().split("\\.")));
                             tempStrings.remove(tempStrings.size() - 1);
                             String searchString = String.join(".", tempStrings).toLowerCase();
                             //debug
@@ -307,6 +307,9 @@ public class Main {
                                 Graph importGraph = null;
                                 if (cli.getSpecialArgument()!=null && cli.getSpecialArgument().contains("i")) {
                                     importGraph = tempGraph.createImportGraph();
+                                    importGraph.forEachNode(node -> {
+                                        node.setType(node.getType()+ "_demo");
+                                    });
                                 } else
                                     importGraph = new Graph("feature.featureGraph",
                                             "Feature Graph");
@@ -316,7 +319,7 @@ public class Main {
                                     for (Graph graph : blockGraphs) {
                                         System.out.println("Processing Block: " + graph.getName());
 
-                                        List<String> tempStrings = new LinkedList<String>(Arrays.asList(graph.getName().split("\\.")));
+                                        List<String> tempStrings = new LinkedList<>(Arrays.asList(graph.getName().split("\\.")));
                                         tempStrings.remove(tempStrings.size() - 1);
                                         String searchString = String.join(".", tempStrings).toLowerCase();
                                         //debug
@@ -420,7 +423,7 @@ public class Main {
                                     for (Graph graph : blockGraphs) {
                                         System.out.println("Processing Block: " + graph.getName());
 
-                                        List<String> tempStrings = new LinkedList<String>(Arrays.asList(graph.getName().split("\\.")));
+                                        List<String> tempStrings = new LinkedList<>(Arrays.asList(graph.getName().split("\\.")));
                                         tempStrings.remove(tempStrings.size() - 1);
                                         String searchString = String.join(".", tempStrings).toLowerCase();
                                         //debug
@@ -593,7 +596,7 @@ public class Main {
                                     for (Graph graph : blockGraphs) {
                                         System.out.println("Processing Block: " + graph.getName());
 
-                                        List<String> tempStrings = new LinkedList<String>(Arrays.asList(graph.getName().split("\\.")));
+                                        List<String> tempStrings = new LinkedList<>(Arrays.asList(graph.getName().split("\\.")));
                                         tempStrings.remove(tempStrings.size() - 1);
                                         String searchString = String.join(".", tempStrings).toLowerCase();
                                         //debug
