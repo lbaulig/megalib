@@ -135,20 +135,130 @@ public class ModelToGraph {
 			{
 				//debug
 				//System.out.println(relation.getSubject() + " imports "+relation.getObject());
-				Node nodeLeft = new Node("Module", relation.getSubject(), "");
+				String[] subjectArr = relation.getSubject().split("[/\\\\.]");
+
+				//debug
+				/*
+				System.out.println("Module of length "+subjectArr.length+":  ");
+
+				for (String item : subjectArr)
+				{
+					System.out.println(item);
+				}
+				*/
+
+				String subject = "";
+				if(subjectArr.length>2)
+				{
+					String subjectModuleName = subjectArr[subjectArr.length - 1];
+					String subjectParentFolder = subjectArr[0];
+					subject = subjectParentFolder + "."+ subjectModuleName;
+				}
+				else
+				{
+					subject = relation.getSubject();
+				}
+
+				String[] objectArr = relation.getObject().split("[/\\\\.]");
+
+				//debug
+				/*
+				System.out.println("Module of length "+objectArr.length+":  ");
+
+				for (String item : objectArr)
+				{
+					System.out.println(item);
+				}
+				*/
+
+				String object = "";
+				if(objectArr.length>2)
+				{
+					String objectModuleName = objectArr[objectArr.length - 1];
+					String objectParentFolder = objectArr[0];
+					object = objectParentFolder + "."+ objectModuleName;
+				}
+				else
+				{
+					object = relation.getObject();
+				}
+
+				if(subject.equals(object))
+					return;
+
+
+				Node nodeLeft = new Node("Module", subject, "");
 				nodeLeft.getInstanceHierarchy().add(nodeLeft.getType());
-				Node nodeRight = new Node("Module", relation.getObject(), "");
+				Node nodeRight = new Node("Module", object, "");
 				nodeRight.getInstanceHierarchy().add(nodeRight.getType());
-				graph.add(nodeLeft);
-				graph.add(nodeRight);
+
+				if (graph.get(nodeLeft.getName()) == null)
+					graph.add(nodeLeft);
+				if (graph.get(nodeRight.getName()) == null)
+					graph.add(nodeRight);
 			});
 
-			model.getImportGraph().forEach(relation -> createEdge(graph, relation.getSubject(), relation.getObject(), "imports"));
+			model.getImportGraph().forEach(relation -> {
+				//debug
+				//System.out.println(relation.getSubject() + " imports "+relation.getObject());
+				String[] subjectArr = relation.getSubject().split("[/\\\\.]");
+
+				//debug
+				/*
+				System.out.println("Module of length "+subjectArr.length+":  ");
+
+				for (String item : subjectArr)
+				{
+					System.out.println(item);
+				}
+				*/
+
+				String subject = "";
+				if(subjectArr.length>2)
+				{
+					String subjectModuleName = subjectArr[subjectArr.length - 1];
+					String subjectParentFolder = subjectArr[0];
+					subject = subjectParentFolder + "."+ subjectModuleName;
+				}
+				else
+				{
+					subject = relation.getSubject();
+				}
+
+				String[] objectArr = relation.getObject().split("[/\\\\.]");
+
+				//debug
+				/*
+				System.out.println("Module of length "+objectArr.length+":  ");
+
+				for (String item : objectArr)
+				{
+					System.out.println(item);
+				}
+				*/
+
+				String object = "";
+				if(objectArr.length>2)
+				{
+					String objectModuleName = objectArr[objectArr.length - 1];
+					String objectParentFolder = objectArr[0];
+					object = objectParentFolder + "."+ objectModuleName;
+				}
+				else
+				{
+					object = relation.getObject();
+				}
+
+				if(subject.equals(object))
+					return;
+				createEdge(graph, subject, object, "imports");
+			});
 		}
         else
 		{
 			//debug
 			//model has no imports, add as single node
+			System.out.println("Module "+moduleName+" does not import anything.");
 			Node node = new Node("Module", moduleName, "");
 			graph.add(node);
 		}
